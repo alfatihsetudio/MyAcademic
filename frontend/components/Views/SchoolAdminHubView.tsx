@@ -261,8 +261,33 @@ export default function SchoolAdminHubView({
   const [isCorrectionModalOpen, setIsCorrectionModalOpen] = useState(false);
   const [selectedCorrection, setSelectedCorrection] = useState<any>(null);
   const [correctionReason, setCorrectionReason] = useState('');
-  const [selectedProofFile, setSelectedProofFile] = useState('surat_dispensasi_kegiatan.pdf');
   const [isConflictModalOpen, setIsConflictModalOpen] = useState(false);
+
+  // CRUD Master Data: Academic Years
+  const [isAddYearModalOpen, setIsAddYearModalOpen] = useState(false);
+  const [isEditYearModalOpen, setIsEditYearModalOpen] = useState(false);
+  const [selectedYearForEdit, setSelectedYearForEdit] = useState<any>(null);
+  const [yearForm, setYearForm] = useState({ name: '', semester: 'Ganjil', start_date: '', end_date: '', is_active: false, description: '' });
+
+  // CRUD Master Data: Classes (Rombel)
+  const [isAddClassModalOpen, setIsAddClassModalOpen] = useState(false);
+  const [isEditClassModalOpen, setIsEditClassModalOpen] = useState(false);
+  const [selectedClassForEdit, setSelectedClassForEdit] = useState<any>(null);
+  const [classForm, setClassForm] = useState({ nama_kelas: '', level: '10', jurusan: 'Umum', capacity: 36, guru_id: '', academic_year_id: '', deskripsi: '' });
+
+  // CRUD Master Data: Subjects (Mata Pelajaran)
+  const [isAddSubjectModalOpen, setIsAddSubjectModalOpen] = useState(false);
+  const [isEditSubjectModalOpen, setIsEditSubjectModalOpen] = useState(false);
+  const [selectedSubjectForEdit, setSelectedSubjectForEdit] = useState<any>(null);
+  const [subjectForm, setSubjectForm] = useState({ nama_mapel: '', code: '', category: 'Wajib', class_level: '10', jurusan: 'Umum', guru_id: '', deskripsi: '' });
+
+  // CRUD User & Role Management
+  const [isEditUserModalOpen, setIsEditUserModalOpen] = useState(false);
+  const [selectedUserForEdit, setSelectedUserForEdit] = useState<any>(null);
+  const [editUserForm, setEditUserForm] = useState({ name: '', email: '', role: 'guru', lifecycle_status: 'aktif', password: '' });
+  const [isAssignRoleModalOpen, setIsAssignRoleModalOpen] = useState(false);
+  const [selectedUserForRole, setSelectedUserForRole] = useState<any>(null);
+  const [newRoleToAssign, setNewRoleToAssign] = useState('guru');
 
   // Show Toast
   const showToast = (msg: string) => {
@@ -388,6 +413,255 @@ export default function SchoolAdminHubView({
   const handleResetPassword = async (user: any) => {
     const res = await resetSchoolAdminPassword(user.id);
     showToast(res?.message || `Password untuk ${user.name} berhasil direset.`);
+  };
+
+  const handleUpdateUser = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedUserForEdit) return;
+    try {
+      const res = await updateSchoolAdminUser(selectedUserForEdit.id, editUserForm);
+      if (res?.success) {
+        showToast(res.message || 'User berhasil diperbarui.');
+        setIsEditUserModalOpen(false);
+        setSelectedUserForEdit(null);
+        const fresh = await fetchSchoolAdminUsers();
+        if (fresh?.users) setUsersList(fresh.users);
+      } else {
+        toast.error(res?.message || 'Gagal memperbarui user');
+      }
+    } catch (err: any) {
+      toast.error(err?.response?.data?.message || 'Terjadi kesalahan');
+    }
+  };
+
+  const handleDeleteUser = async (id: number) => {
+    if (!confirm('Apakah Anda yakin ingin menghapus akun user ini?')) return;
+    try {
+      const res = await deleteSchoolAdminUser(id);
+      if (res?.success) {
+        showToast(res.message || 'User berhasil dihapus.');
+        const fresh = await fetchSchoolAdminUsers();
+        if (fresh?.users) setUsersList(fresh.users);
+      } else {
+        toast.error(res?.message || 'Gagal menghapus user');
+      }
+    } catch (err: any) {
+      toast.error(err?.response?.data?.message || 'Terjadi kesalahan');
+    }
+  };
+
+  const handleAssignRole = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedUserForRole) return;
+    try {
+      const res = await assignSchoolAdminRole(selectedUserForRole.id, newRoleToAssign);
+      if (res?.success) {
+        showToast(res.message || 'Role user berhasil diperbarui.');
+        setIsAssignRoleModalOpen(false);
+        setSelectedUserForRole(null);
+        const fresh = await fetchSchoolAdminUsers();
+        if (fresh?.users) setUsersList(fresh.users);
+      } else {
+        toast.error(res?.message || 'Gagal mengubah role user');
+      }
+    } catch (err: any) {
+      toast.error(err?.response?.data?.message || 'Terjadi kesalahan');
+    }
+  };
+
+  const handleToggleStatus = async (user: any) => {
+    try {
+      const res = await toggleSchoolAdminUserStatus(user.id);
+      if (res?.success) {
+        showToast(res.message || 'Status user berhasil diubah.');
+        const fresh = await fetchSchoolAdminUsers();
+        if (fresh?.users) setUsersList(fresh.users);
+      } else {
+        toast.error(res?.message || 'Gagal mengubah status');
+      }
+    } catch (err: any) {
+      toast.error(err?.response?.data?.message || 'Terjadi kesalahan');
+    }
+  };
+
+  // Master Data Handlers: Academic Years
+  const handleCreateYear = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!yearForm.name) return;
+    try {
+      const res = await createSchoolAdminAcademicYear(yearForm);
+      if (res?.success) {
+        showToast(res.message || 'Tahun ajaran berhasil ditambahkan.');
+        setIsAddYearModalOpen(false);
+        setYearForm({ name: '', semester: 'Ganjil', start_date: '', end_date: '', is_active: false, description: '' });
+        const fresh = await fetchSchoolAdminAcademicYears();
+        if (fresh?.years) setAcademicYears(fresh.years);
+      } else {
+        toast.error(res?.message || 'Gagal menambahkan tahun ajaran');
+      }
+    } catch (err: any) {
+      toast.error(err?.response?.data?.message || 'Terjadi kesalahan');
+    }
+  };
+
+  const handleUpdateYear = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedYearForEdit) return;
+    try {
+      const res = await updateSchoolAdminAcademicYear(selectedYearForEdit.id, yearForm);
+      if (res?.success) {
+        showToast(res.message || 'Tahun ajaran berhasil diperbarui.');
+        setIsEditYearModalOpen(false);
+        setSelectedYearForEdit(null);
+        const fresh = await fetchSchoolAdminAcademicYears();
+        if (fresh?.years) setAcademicYears(fresh.years);
+      } else {
+        toast.error(res?.message || 'Gagal memperbarui tahun ajaran');
+      }
+    } catch (err: any) {
+      toast.error(err?.response?.data?.message || 'Terjadi kesalahan');
+    }
+  };
+
+  const handleDeleteYear = async (id: number) => {
+    if (!confirm('Apakah Anda yakin ingin menghapus tahun ajaran ini?')) return;
+    try {
+      const res = await deleteSchoolAdminAcademicYear(id);
+      if (res?.success) {
+        showToast(res.message || 'Tahun ajaran berhasil dihapus.');
+        const fresh = await fetchSchoolAdminAcademicYears();
+        if (fresh?.years) setAcademicYears(fresh.years);
+      } else {
+        toast.error(res?.message || 'Gagal menghapus tahun ajaran');
+      }
+    } catch (err: any) {
+      toast.error(err?.response?.data?.message || 'Terjadi kesalahan saat menghapus');
+    }
+  };
+
+  const handleSetActiveYear = async (id: number) => {
+    try {
+      const res = await setActiveSchoolAdminAcademicYear(id);
+      if (res?.success) {
+        showToast(res.message || 'Tahun ajaran berhasil diaktifkan secara global!');
+        const fresh = await fetchSchoolAdminAcademicYears();
+        if (fresh?.years) setAcademicYears(fresh.years);
+      } else {
+        toast.error(res?.message || 'Gagal mengaktifkan tahun ajaran');
+      }
+    } catch (err: any) {
+      toast.error(err?.response?.data?.message || 'Terjadi kesalahan');
+    }
+  };
+
+  // Master Data Handlers: Classes (Rombel)
+  const handleCreateClass = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!classForm.nama_kelas) return;
+    try {
+      const res = await createSchoolAdminClass(classForm);
+      if (res?.success) {
+        showToast(res.message || 'Kelas berhasil ditambahkan.');
+        setIsAddClassModalOpen(false);
+        setClassForm({ nama_kelas: '', level: '10', jurusan: 'Umum', capacity: 36, guru_id: '', academic_year_id: '', deskripsi: '' });
+        const fresh = await fetchSchoolAdminClasses();
+        if (fresh?.classes) setClassesList(fresh.classes);
+      } else {
+        toast.error(res?.message || 'Gagal membuat kelas');
+      }
+    } catch (err: any) {
+      toast.error(err?.response?.data?.message || 'Terjadi kesalahan');
+    }
+  };
+
+  const handleUpdateClass = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedClassForEdit) return;
+    try {
+      const res = await updateSchoolAdminClass(selectedClassForEdit.id, classForm);
+      if (res?.success) {
+        showToast(res.message || 'Kelas berhasil diperbarui.');
+        setIsEditClassModalOpen(false);
+        setSelectedClassForEdit(null);
+        const fresh = await fetchSchoolAdminClasses();
+        if (fresh?.classes) setClassesList(fresh.classes);
+      } else {
+        toast.error(res?.message || 'Gagal memperbarui kelas');
+      }
+    } catch (err: any) {
+      toast.error(err?.response?.data?.message || 'Terjadi kesalahan');
+    }
+  };
+
+  const handleDeleteClass = async (id: number) => {
+    if (!confirm('Apakah Anda yakin ingin menghapus kelas ini?')) return;
+    try {
+      const res = await deleteSchoolAdminClass(id);
+      if (res?.success) {
+        showToast(res.message || 'Kelas berhasil dihapus.');
+        const fresh = await fetchSchoolAdminClasses();
+        if (fresh?.classes) setClassesList(fresh.classes);
+      } else {
+        toast.error(res?.message || 'Gagal menghapus kelas');
+      }
+    } catch (err: any) {
+      toast.error(err?.response?.data?.message || 'Terjadi kesalahan');
+    }
+  };
+
+  // Master Data Handlers: Subjects (Mata Pelajaran)
+  const handleCreateSubject = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!subjectForm.nama_mapel) return;
+    try {
+      const res = await createSchoolAdminSubject(subjectForm);
+      if (res?.success) {
+        showToast(res.message || 'Mata pelajaran berhasil ditambahkan.');
+        setIsAddSubjectModalOpen(false);
+        setSubjectForm({ nama_mapel: '', code: '', category: 'Wajib', class_level: '10', jurusan: 'Umum', guru_id: '', deskripsi: '' });
+        const fresh = await fetchSchoolAdminSubjects();
+        if (fresh?.subjects) setSubjectsList(fresh.subjects);
+      } else {
+        toast.error(res?.message || 'Gagal menambahkan mata pelajaran');
+      }
+    } catch (err: any) {
+      toast.error(err?.response?.data?.message || 'Terjadi kesalahan');
+    }
+  };
+
+  const handleUpdateSubject = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedSubjectForEdit) return;
+    try {
+      const res = await updateSchoolAdminSubject(selectedSubjectForEdit.id, subjectForm);
+      if (res?.success) {
+        showToast(res.message || 'Mata pelajaran berhasil diperbarui.');
+        setIsEditSubjectModalOpen(false);
+        setSelectedSubjectForEdit(null);
+        const fresh = await fetchSchoolAdminSubjects();
+        if (fresh?.subjects) setSubjectsList(fresh.subjects);
+      } else {
+        toast.error(res?.message || 'Gagal memperbarui mata pelajaran');
+      }
+    } catch (err: any) {
+      toast.error(err?.response?.data?.message || 'Terjadi kesalahan');
+    }
+  };
+
+  const handleDeleteSubject = async (id: number) => {
+    if (!confirm('Apakah Anda yakin ingin menghapus mata pelajaran ini?')) return;
+    try {
+      const res = await deleteSchoolAdminSubject(id);
+      if (res?.success) {
+        showToast(res.message || 'Mata pelajaran berhasil dihapus.');
+        const fresh = await fetchSchoolAdminSubjects();
+        if (fresh?.subjects) setSubjectsList(fresh.subjects);
+      } else {
+        toast.error(res?.message || 'Gagal menghapus mata pelajaran');
+      }
+    } catch (err: any) {
+      toast.error(err?.response?.data?.message || 'Terjadi kesalahan');
+    }
   };
 
   const handleToggleGradeLock = async (gradebookId: number) => {
