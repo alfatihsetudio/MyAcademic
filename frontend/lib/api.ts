@@ -818,9 +818,58 @@ export async function fetchSchoolAdminClasses(): Promise<any> {
   } catch (error) { throw error; }
 }
 
+export async function createSchoolAdminClass(payload: Record<string, any>): Promise<any> {
+  try {
+    const res = await axiosInstance.post('/school-admin/classes', payload);
+    return res.data;
+  } catch (error) { throw error; }
+}
+
+export async function updateSchoolAdminClass(id: number, payload: Record<string, any>): Promise<any> {
+  try {
+    const res = await axiosInstance.put(`/school-admin/classes/${id}`, payload);
+    return res.data;
+  } catch (error) { throw error; }
+}
+
+export async function deleteSchoolAdminClass(id: number): Promise<any> {
+  try {
+    const res = await axiosInstance.delete(`/school-admin/classes/${id}`);
+    return res.data;
+  } catch (error) { throw error; }
+}
+
 export async function fetchSchoolAdminAcademicYears(): Promise<any> {
   try {
     const res = await axiosInstance.get('/school-admin/academic-years');
+    return res.data;
+  } catch (error) { throw error; }
+}
+
+export async function createSchoolAdminAcademicYear(payload: Record<string, any>): Promise<any> {
+  try {
+    const res = await axiosInstance.post('/school-admin/academic-years', payload);
+    return res.data;
+  } catch (error) { throw error; }
+}
+
+export async function updateSchoolAdminAcademicYear(id: number, payload: Record<string, any>): Promise<any> {
+  try {
+    const res = await axiosInstance.put(`/school-admin/academic-years/${id}`, payload);
+    return res.data;
+  } catch (error) { throw error; }
+}
+
+export async function deleteSchoolAdminAcademicYear(id: number): Promise<any> {
+  try {
+    const res = await axiosInstance.delete(`/school-admin/academic-years/${id}`);
+    return res.data;
+  } catch (error) { throw error; }
+}
+
+export async function setActiveSchoolAdminAcademicYear(id: number): Promise<any> {
+  try {
+    const res = await axiosInstance.post(`/school-admin/academic-years/${id}/set-active`);
     return res.data;
   } catch (error) { throw error; }
 }
@@ -835,6 +884,27 @@ export async function fetchSchoolAdminCalendar(): Promise<any> {
 export async function fetchSchoolAdminSubjects(): Promise<any> {
   try {
     const res = await axiosInstance.get('/school-admin/subjects');
+    return res.data;
+  } catch (error) { throw error; }
+}
+
+export async function createSchoolAdminSubject(payload: Record<string, any>): Promise<any> {
+  try {
+    const res = await axiosInstance.post('/school-admin/subjects', payload);
+    return res.data;
+  } catch (error) { throw error; }
+}
+
+export async function updateSchoolAdminSubject(id: number, payload: Record<string, any>): Promise<any> {
+  try {
+    const res = await axiosInstance.put(`/school-admin/subjects/${id}`, payload);
+    return res.data;
+  } catch (error) { throw error; }
+}
+
+export async function deleteSchoolAdminSubject(id: number): Promise<any> {
+  try {
+    const res = await axiosInstance.delete(`/school-admin/subjects/${id}`);
     return res.data;
   } catch (error) { throw error; }
 }
@@ -2771,4 +2841,28 @@ export async function updateStudentPreferences(data: { theme?: string; language?
 }
 
 export async function revokeDeviceSession(sessionId?: number, revokeAllOthers: boolean = false): Promise<any> {
-  
+  const res = await axiosInstance.post('/student/settings/revoke-session', {
+    session_id: sessionId,
+    revoke_all_others: revokeAllOthers,
+  });
+  return res.data;
+}
+
+export async function requestStudentPasswordRecovery(identifier: string): Promise<any> {
+  const res = await axiosInstance.post('/public/auth/recovery/request', { identifier });
+  return res.data;
+}
+
+export async function resetPasswordWithToken(data: { email: string; token: string; new_password: string; new_password_confirmation: string }): Promise<any> {
+  const res = await axiosInstance.post('/public/auth/recovery/reset', data);
+  return res.data;
+}
+
+export async function adminVerifyAndResetPassword(studentId: number, data: { nisn: string; birth_date: string; mother_name: string; temp_password: string }): Promise<any> {
+  const res = await axiosInstance.post(`/school-admin/students/${studentId}/verify-and-reset-password`, data);
+  return res.data;
+}
+
+
+
+
