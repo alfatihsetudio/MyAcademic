@@ -1,0 +1,25 @@
+<?php
+
+namespace Database\Migrations;
+
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::table('admission_programs', function (Blueprint $table) {
+            $table->text('benefits')->nullable()->after('description');
+            $table->text('requirements')->nullable()->after('benefits');
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::table('admission_programs', function (Blueprint $table) {
+            $table->dropColumn(['benefits', 'requirements']);
+        });
+    }
+};

@@ -1,0 +1,54 @@
+# Dependencies
+node_modules/
+**/node_modules/
+vendor/
+**/vendor/
+
+# Environment files (keep .env.example)
+.env
+.env.backup
+.env.production
+.env.testing
+**/.env
+**/.env.backup
+**/.env.production
+**/.env.testing
+!**/.env.example
+
+# Next.js
+.next/
+**/.next/
+out/
+**/out/
+*.tsbuildinfo
+**/*.tsbuildinfo
+next-env.d.ts
+
+# Laravel / PHP
+.phpunit.result.cache
+**/.phpunit.result.cache
+.phpunit.cache
+**/.phpunit.cache
+storage/*.key
+**/storage/*.key
+storage/logs/*.log
+**/storage/logs/*.log
+storage/framework/cache/data/*
+**/storage/framework/cache/data/*
+storage/framework/sessions/*
+**/storage/framework/sessions/*
+**/storage/framework/views/*
+**/storage/pail/*
+public/storage
+**/public/storage
+public/hot
+**/public/hot
+
+# Misc & IDE
+*.log
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+.fleet/
+.zed/

@@ -1,0 +1,433 @@
+@import "tailwindcss";
+
+@variant dark (&:where(body.theme-midnight, body.theme-midnight *, body.theme-glass, body.theme-glass *));
+
+@layer base {
+  :root {
+    --bg-page: #e8eef6;
+    --card-surface: #ffffff;
+    --card-surface-elevated: #ffffff;
+    --card-border: rgba(226, 232, 240, 0.85);
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --accent-dark: #0f172a;
+    --accent-blue: #0284c7;
+    --accent-coral: #f43f5e;
+    --accent-green: #059669;
+  }
+
+  body {
+    background-color: #e8eef6;
+    background-image: 
+      radial-gradient(circle at 20% 15%, rgba(224, 242, 254, 0.75) 0%, transparent 45%),
+      radial-gradient(circle at 80% 80%, rgba(219, 234, 254, 0.6) 0%, transparent 45%);
+    color: var(--text-primary);
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    min-height: 100vh;
+    overflow-x: hidden;
+    letter-spacing: -0.011em;
+  }
+}
+
+/* Neumorphic & Soft UI Card Classes */
+.neu-panel {
+  background: rgba(241, 245, 249, 0.85);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: 28px;
+  box-shadow: 
+    0 12px 30px -8px rgba(100, 116, 139, 0.12),
+    0 4px 12px -2px rgba(100, 116, 139, 0.06),
+    inset 0 1px 1px rgba(255, 255, 255, 0.9);
+}
+
+.neu-card {
+  background: #ffffff;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  border-radius: 22px;
+  box-shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.04);
+  transition: all 0.2s ease-in-out;
+}
+
+.neu-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px -4px rgba(15, 23, 42, 0.08);
+}
+
+.neu-button {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: 9999px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  transition: all 0.18s ease-in-out;
+}
+
+.neu-button:hover {
+  background: #ffffff;
+  transform: scale(1.04);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.07);
+}
+
+.active-pill {
+  background: #0f172a;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.2);
+}
+
+/* Scrollbar polish */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.5);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 116, 139, 0.7);
+}
+
+/* 3D Flashcard Flip Utilities */
+.perspective-1000 {
+  perspective: 1000px;
+  -webkit-perspective: 1000px;
+}
+.transform-style-3d {
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+}
+.backface-hidden {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.rotate-y-180 {
+  transform: rotateY(180deg);
+  -webkit-transform: rotateY(180deg);
+}
+
+/* ========================================================================= */
+/* MYACADEMIC 3 VISUAL THEMES: FORMAL, GLASS, MIDNIGHT                       */
+/* ========================================================================= */
+
+/* 1. THEME: FORMAL (Default Academic: Pristine White & Academic Blue) */
+body.theme-formal {
+  --bg-page: #e8eef6;
+  background-color: #e8eef6;
+  background-image: 
+    radial-gradient(circle at 20% 15%, rgba(224, 242, 254, 0.75) 0%, transparent 45%),
+    radial-gradient(circle at 80% 80%, rgba(219, 234, 254, 0.6) 0%, transparent 45%);
+  color: #0f172a;
+}
+body.theme-formal .theme-glass-container,
+body.theme-formal .theme-glass-card,
+body.theme-formal .bento-panel,
+body.theme-formal .theme-panel,
+body.theme-formal .neu-card,
+body.theme-formal aside,
+body.theme-formal header {
+  background: #ffffff !important;
+  border: 1px solid rgba(226, 232, 240, 0.9) !important;
+  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05) !important;
+  color: #0f172a;
+}
+
+/* 2. THEME: GLASS (Apple VisionOS / macOS Frosted Glassmorphism - Translucent, Airy, Crisp Specular Border) */
+body.theme-glass {
+  --bg-page: #080d1a;
+  background-color: #080d1a;
+  /* Realistic warm interior & architectural depth ambiance (warm incandescent lamps, cool window daylight) */
+  background-image: 
+    radial-gradient(circle at 15% 15%, rgba(245, 158, 11, 0.28) 0%, transparent 45%),
+    radial-gradient(circle at 85% 12%, rgba(56, 189, 248, 0.32) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.22) 0%, transparent 65%),
+    radial-gradient(circle at 80% 85%, rgba(236, 72, 153, 0.2) 0%, transparent 50%),
+    radial-gradient(circle at 20% 85%, rgba(16, 185, 129, 0.2) 0%, transparent 50%),
+    linear-gradient(180deg, #0e1526 0%, #060913 100%);
+  background-attachment: fixed;
+  color: #f8fafc;
+}
+
+/* Outer frame, modal shell, sidebar, and header in Glass mode */
+body.theme-glass .theme-glass-container,
+body.theme-glass aside,
+body.theme-glass header {
+  background: rgba(255, 255, 255, 0.05) !important;
+  backdrop-filter: blur(6px) saturate(140%) !important;
+  -webkit-backdrop-filter: blur(6px) saturate(140%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.22) !important;
+  box-shadow: 0 24px 60px -10px rgba(0, 0, 0, 0.4), inset 0 1px 1px 0 rgba(255, 255, 255, 0.35) !important;
+  color: #f8fafc !important;
+}
+
+/* Bento cards, action cards, panels, and module card surfaces in Glass mode */
+body.theme-glass .theme-glass-card,
+body.theme-glass .bento-panel,
+body.theme-glass .theme-panel,
+body.theme-glass .neu-card,
+body.theme-glass .neu-panel,
+body.theme-glass .bg-white,
+body.theme-glass .bg-white\/90,
+body.theme-glass .bg-white\/85,
+body.theme-glass .bg-white\/80,
+body.theme-glass .bg-white\/75,
+body.theme-glass .bg-white\/70,
+body.theme-glass .bg-slate-50,
+body.theme-glass .bg-slate-50\/95,
+body.theme-glass .bg-slate-50\/90,
+body.theme-glass .bg-slate-50\/80,
+body.theme-glass .bg-slate-100,
+body.theme-glass .bg-slate-100\/90,
+body.theme-glass .bg-slate-100\/80,
+body.theme-glass .bg-slate-100\/70,
+body.theme-glass .bg-slate-200 {
+  background: rgba(255, 255, 255, 0.04) !important;
+  backdrop-filter: blur(5px) saturate(135%) !important;
+  -webkit-backdrop-filter: blur(5px) saturate(135%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  box-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.3), inset 0 1px 0 0 rgba(255, 255, 255, 0.28) !important;
+  color: #f8fafc !important;
+}
+
+body.theme-glass .theme-glass-card:hover,
+body.theme-glass .neu-card:hover {
+  background: rgba(255, 255, 255, 0.09) !important;
+  border-color: rgba(255, 255, 255, 0.35) !important;
+  box-shadow: 0 18px 45px -4px rgba(0, 0, 0, 0.4), inset 0 1px 0 0 rgba(255, 255, 255, 0.4) !important;
+}
+
+/* Inputs, textareas, selects */
+body.theme-glass input,
+body.theme-glass select,
+body.theme-glass textarea {
+  background-color: rgba(0, 0, 0, 0.2) !important;
+  backdrop-filter: blur(4px) !important;
+  -webkit-backdrop-filter: blur(4px) !important;
+  color: #f8fafc !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+}
+
+body.theme-glass input::placeholder,
+body.theme-glass textarea::placeholder {
+  color: rgba(255, 255, 255, 0.45) !important;
+}
+
+body.theme-glass h1,
+body.theme-glass h2,
+body.theme-glass h3,
+body.theme-glass h4,
+body.theme-glass h5,
+body.theme-glass h6,
+body.theme-glass .text-slate-900,
+body.theme-glass .text-slate-800 {
+  color: #ffffff !important;
+}
+
+body.theme-glass .text-slate-700,
+body.theme-glass .text-slate-600 {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+body.theme-glass .text-slate-500,
+body.theme-glass .text-slate-400 {
+  color: rgba(255, 255, 255, 0.55) !important;
+}
+
+body.theme-glass .border-slate-200,
+body.theme-glass .border-slate-200\/90,
+body.theme-glass .border-slate-200\/80,
+body.theme-glass .border-slate-200\/70,
+body.theme-glass .border-slate-100 {
+  border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+body.theme-glass .border-b,
+body.theme-glass .border-t {
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Glass Nested Wells & Empty State Containers */
+body.theme-glass .border-dashed {
+  border-color: rgba(255, 255, 255, 0.2) !important;
+  background: rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Badges and pills in Glass mode */
+body.theme-glass .bg-sky-50,
+body.theme-glass .bg-sky-100,
+body.theme-glass .bg-slate-100 {
+  background: rgba(255, 255, 255, 0.1) !important;
+  color: #f8fafc !important;
+  border-color: rgba(255, 255, 255, 0.18) !important;
+}
+
+/* 3. THEME: MIDNIGHT (Obsidian Celestial Glass + Starry Cosmic Night Sky) */
+body.theme-midnight {
+  --bg-page: #040711;
+  background-color: #040711;
+  background-image: 
+    radial-gradient(1.2px 1.2px at 20px 30px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(1.8px 1.8px at 120px 80px, #60a5fa, rgba(0,0,0,0)),
+    radial-gradient(1.2px 1.2px at 240px 180px, #a5b4fc, rgba(0,0,0,0)),
+    radial-gradient(1.8px 1.8px at 360px 60px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(1.2px 1.2px at 480px 220px, #38bdf8, rgba(0,0,0,0)),
+    radial-gradient(circle at 20% 15%, rgba(30, 58, 138, 0.45) 0%, transparent 60%),
+    radial-gradient(circle at 80% 85%, rgba(88, 28, 135, 0.35) 0%, transparent 60%),
+    radial-gradient(circle at 50% 50%, rgba(10, 17, 36, 0.92) 0%, transparent 100%);
+  background-repeat: repeat;
+  background-size: 500px 500px, 500px 500px, 500px 500px, 500px 500px, 500px 500px, cover, cover, cover;
+  background-attachment: fixed;
+  color: #f8fafc;
+}
+
+body.theme-midnight .theme-glass-container,
+body.theme-midnight aside,
+body.theme-midnight header {
+  background: rgba(10, 16, 32, 0.78) !important;
+  backdrop-filter: blur(36px) saturate(200%) !important;
+  -webkit-backdrop-filter: blur(36px) saturate(200%) !important;
+  border: 1px solid rgba(56, 189, 248, 0.22) !important;
+  box-shadow: 0 24px 60px -8px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+  color: #f8fafc;
+}
+
+body.theme-midnight .theme-glass-card,
+body.theme-midnight .bento-panel,
+body.theme-midnight .neu-panel,
+body.theme-midnight .neu-card,
+body.theme-midnight .theme-panel,
+body.theme-midnight .bg-white,
+body.theme-midnight .bg-white\/90,
+body.theme-midnight .bg-white\/80,
+body.theme-midnight .bg-slate-50,
+body.theme-midnight .bg-slate-50\/95,
+body.theme-midnight .bg-slate-50\/90,
+body.theme-midnight .bg-slate-50\/80,
+body.theme-midnight .bg-slate-100,
+body.theme-midnight .bg-slate-100\/90,
+body.theme-midnight .bg-slate-100\/80,
+body.theme-midnight .bg-slate-100\/70,
+body.theme-midnight .bg-slate-200 {
+  background: rgba(13, 22, 41, 0.84) !important;
+  backdrop-filter: blur(28px) saturate(200%) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(200%) !important;
+  border-color: rgba(56, 189, 248, 0.22) !important;
+  box-shadow: 0 16px 48px -4px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+  color: #f8fafc;
+}
+
+body.theme-midnight input,
+body.theme-midnight select,
+body.theme-midnight textarea {
+  background-color: rgba(15, 23, 42, 0.88) !important;
+  color: #f8fafc !important;
+  border-color: rgba(56, 189, 248, 0.25) !important;
+}
+
+body.theme-midnight input::placeholder,
+body.theme-midnight textarea::placeholder {
+  color: #64748b !important;
+}
+
+body.theme-midnight h1,
+body.theme-midnight h2,
+body.theme-midnight h3,
+body.theme-midnight h4,
+body.theme-midnight h5,
+body.theme-midnight h6,
+body.theme-midnight .text-slate-900,
+body.theme-midnight .text-slate-800 {
+  color: #f8fafc !important;
+}
+
+body.theme-midnight .text-slate-700,
+body.theme-midnight .text-slate-600 {
+  color: #cbd5e1 !important;
+}
+
+body.theme-midnight .text-slate-500,
+body.theme-midnight .text-slate-400 {
+  color: #94a3b8 !important;
+}
+
+body.theme-midnight .border-slate-200,
+body.theme-midnight .border-slate-200\/90,
+body.theme-midnight .border-slate-200\/80,
+body.theme-midnight .border-slate-200\/70,
+body.theme-midnight .border-slate-100,
+body.theme-midnight .border-slate-300 {
+  border-color: rgba(56, 189, 248, 0.16) !important;
+}
+
+body.theme-midnight .divide-slate-100,
+body.theme-midnight .divide-slate-200 {
+  border-color: rgba(56, 189, 248, 0.12) !important;
+}
+
+body.theme-midnight .border-b,
+body.theme-midnight .border-t {
+  border-color: rgba(56, 189, 248, 0.14) !important;
+}
+
+body.theme-midnight .bg-sky-50,
+body.theme-midnight .bg-sky-100,
+body.theme-midnight .bg-slate-100 {
+  background: rgba(14, 165, 233, 0.12) !important;
+  color: #7dd3fc !important;
+  border-color: rgba(56, 189, 248, 0.25) !important;
+}
+
+body.theme-midnight .bg-emerald-50,
+body.theme-midnight .bg-emerald-100 {
+  background: rgba(16, 185, 129, 0.12) !important;
+  color: #6ee7b7 !important;
+  border-color: rgba(16, 185, 129, 0.25) !important;
+}
+
+body.theme-midnight .bg-slate-900 {
+  background-color: #0284c7 !important;
+  color: #ffffff !important;
+}
+
+body.theme-midnight .bg-slate-900:hover {
+  background-color: #0369a1 !important;
+}
+
+body.theme-glass .divide-slate-100,
+body.theme-glass .divide-slate-200 {
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+body.theme-glass .border-slate-300 {
+  border-color: rgba(255, 255, 255, 0.18) !important;
+}
+
+body.theme-glass .bg-slate-900 {
+  background-color: rgba(14, 165, 233, 0.8) !important;
+  color: #ffffff !important;
+}
+
+body.theme-glass .bg-slate-900:hover {
+  background-color: rgba(2, 132, 199, 0.9) !important;
+}
+
+/* RTL Layout Support (Arabic) */
+html[dir="rtl"],
+[dir="rtl"] {
+  direction: rtl;
+  text-align: right;
+}
+html[dir="rtl"] .space-x-reverse > :not([hidden]) ~ :not([hidden]),
+[dir="rtl"] .space-x-reverse > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 1;
+}
+html[dir="rtl"] .rtl-flip,
+[dir="rtl"] .rtl-flip {
+  transform: scaleX(-1);
+}
+
+

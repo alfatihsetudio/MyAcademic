@@ -1,0 +1,493 @@
+{
+    "academic_years": [
+        "id (bigint unsigned) NOT NULL",
+        "name (varchar(255)) NOT NULL",
+        "is_active (tinyint(1)) NOT NULL DEFAULT 0",
+        "created_at (timestamp)",
+        "updated_at (timestamp)"
+    ],
+    "announcements": [
+        "id (bigint unsigned) NOT NULL",
+        "school_id (bigint unsigned)",
+        "title (varchar(255)) NOT NULL",
+        "content (longtext) NOT NULL",
+        "created_by (bigint unsigned)",
+        "created_at (timestamp)",
+        "updated_at (timestamp)"
+    ],
+    "assignment_files": [
+        "id (bigint unsigned) NOT NULL",
+        "assignment_id (bigint unsigned) NOT NULL",
+        "file_id (bigint unsigned) NOT NULL",
+        "file_type (varchar(255))",
+        "created_at (timestamp)",
+        "updated_at (timestamp)"
+    ],
+    "assignments": [
+        "id (bigint unsigned) NOT NULL",
+        "school_id (bigint unsigned)",
+        "subject_id (bigint unsigned)",
+        "target_class_id (bigint unsigned)",
+        "judul (varchar(255)) NOT NULL",
+        "deskripsi (longtext)",
+        "file_id (bigint unsigned)",
+        "deadline (datetime)",
+        "session_info (varchar(500))",
+        "video_link (varchar(500))",
+        "created_by (bigint unsigned)",
+        "created_at (timestamp)",
+        "updated_at (timestamp)"
+    ],
+    "attendance_rules": [
+        "id (bigint unsigned) NOT NULL",
+        "school_id (bigint unsigned) NOT NULL",
+        "check_in_time (time) NOT NULL",
+        "check_out_time (time) NOT NULL",
+        "created_at (timestamp)",
+        "updated_at (timestamp)"
+    ],
+    "audit_logs": [
+        "id (bigint unsigned) NOT NULL",
+        "user_id (bigint unsigned)",
+        "school_id (bigint unsigned)",
+        "action (varchar(255)) NOT NULL",
+        "model_type (varchar(255)) NOT NULL",
+        "model_id (bigint unsigned) NOT NULL",
+        "old_values (json)",
+        "new_values (json)",
+        "ip_address (varchar(255))",
+        "created_at (timestamp)",
+        "updated_at (timestamp)"
+    ],
+    "cache_locks": [
+        "key (varchar(255)) NOT NULL",
+        "owner (varchar(255)) NOT NULL",
+        "expiration (int) NOT NULL"
+    ],
+    "calendar_events": [
+        "id (bigint unsigned) NOT NULL",
+        "user_id (bigint unsigned) NOT NULL",
+        "event_date (date) NOT NULL",
+        "type (enum('holiday','special','warning')) NOT NULL DEFAULT special",
+        "title (varchar(255)) NOT NULL",
+        "note (text)",
+        "created_at (timestamp)",
+        "updated_at (timestamp)"
+    ],
+    "class_user": [
+        "id (bigint unsigned) NOT NULL",
+        "class_id (bigint unsigned) NOT NULL",
+        "user_id (bigint unsigned) NOT NULL",
+        "enrolled_at (timestamp) NOT NULL DEFAULT CURRENT_TIMESTAMP"
+    ],
+    "counseling_cases": [
+        "id (bigint unsigned) NOT NULL",
+        "school_id (bigint unsigned) NOT NULL",
+        "student_id (bigint unsigned) NOT NULL",
+        "details (text) NOT NULL",
+        "created_at (timestamp)",
+        "updated_at (timestamp)"
+    ],
+    "exam_answers": [
+        "id (bigint unsigned) NOT NULL",
+        "school_id (bigint unsigned) NOT NULL",
+        "exam_attempt_id (bigint unsigned) NOT NULL",
+        "question_id (bigint unsigned) NOT NULL",
+        "answer_text (text) NOT NULL",
+        "created_at (timestamp)",
+        "updated_at (timestamp)",
+        "is_correct (tinyint(1))",
+        "points_awarded (decimal(5,2))"
+    ],
+    "exam_attempts": [
+        "id (bigint unsigned) NOT NULL",
+        "school_id (bigint unsigned) NOT NULL",
+        "exam_id (bigint unsigned) NOT NULL",
+        "student_id (bigint unsigned) NOT NULL",
+        "created_at (timestamp)",
+        "updated_at (timestamp)"
+    ],
+    "exams": [
+        "id (bigint unsigned) NOT NULL",
+        "school_id (bigint unsigned) NOT NULL",
+        "title (varchar(255)) NOT NULL",
+        "created_at (timestamp)",
+        "updated_at (timestamp)",
+        "gradebook_id (bigint unsigned)"
+    ],
+    "extracurricular_members": [
+        "id (bigint unsigned) NOT NULL",
+        "school_id (bigint unsigned) NOT NULL",
+        "extracurricular_id (bigint unsigned) NOT NULL",
+        "student_id (bigint unsigned) NOT NULL",
+        "created_at (timestamp)",
+        "updated_at (timestamp)"
+    ],
+    "extracurriculars": [
+        "id (bigint unsigned) NOT NULL",
+        "school_id (bigint unsigned) NOT NULL",
+        "name (varchar(255)) NOT NULL",
+        "created_at (timestamp)",
+        "updated_at (timestamp)"
+    ],
+    "failed_jobs": [
+        "id (bigint unsigned) NOT NULL",
+        "uuid (varchar(255)) NOT NULL",
+        "connection (text) NOT NULL",
+        "queue (text) NOT NULL",
+        "payload (longtext) NOT NULL",
+        "exception (longtext) NOT NULL",
+        "failed_at (timestamp) NOT NULL DEFAULT CURRENT_TIMESTAMP"
+    ],
+    "file_uploads": [
+        "id (bigint unsigned) NOT NULL",
+        "original_name (varchar(255)) NOT NULL",
+        "stored_name (varchar(255)) NOT NULL",
+        "file_path (varchar(500)) NOT NULL",
+        "mime_type (varchar(255)) NOT NULL",
+        "file_size (bigint) NOT NULL DEFAULT 0",
+        "size (bigint) NOT NULL DEFAULT 0",
+        "uploader_id (bigint unsigned)",
+        "uploaded_at (timestamp) NOT NULL DEFAULT CURRENT_TIMESTAMP",
+        "created_at (timestamp)",
+        "updated_at (timestamp)"
+    ],
+    "gradebooks": [
+        "id (bigint unsigned) NOT NULL",
+        "school_id (bigint unsigned) NOT NULL",
+        "name (varchar(255)) NOT NULL",
+        "created_at (timestamp)",
+        "updated_at (timestamp)"
+    ],
+    "grades": [
+        "id (bigint unsigned) NOT NULL",
+        "school_id (bigint unsigned) NOT NULL",
+        "gradebook_id (bigint unsigned) NOT NULL",
+        "student_id (bigint unsigned) NOT NULL",
+        "score (decimal(5,2)) NOT NULL",
+        "created_at (timestamp)",
+        "updated_at (timestamp)",
+        "is_locked (tinyint(1)) NOT NULL DEFAULT 0",
+        "type (varchar(255))",
+        "related_id (bigint unsigned)"
+    ],
+    "job_batches": [
+        "id (varchar(255)) NOT NULL",
+        "name (varchar(255)) NOT NULL",
+        "total_jobs (int) NOT NULL",
+        "pending_jobs (int) NOT NULL",
+        "failed_jobs (int) NOT NULL",
+        "failed_job_ids (longtext) NOT NULL",
+        "options (mediumtext)",
+        "cancelled_at (int)",
+        "created_at (int) NOT NULL",
+        "finished_at (int)"
+    ],
+    "jobs": [
+        "id (bigint unsigned) NOT NULL",
+        "queue (varchar(255)) NOT NULL",
+        "payload (longtext) NOT NULL",
+        "attempts (tinyint unsigned) NOT NULL",
+        "reserved_at (int unsigned)",
+        "available_at (int unsigned) NOT NULL",
+        "created_at (int unsigned) NOT NULL"
+    ],
+    "learning_materials": [
+        "id (bigint unsigned) NOT NULL",
+        "school_id (bigint unsigned) NOT NULL",
+        "teaching_assignment_id (bigint unsigned) NOT NULL",
+        "title (varchar(255)) NOT NULL",
+        "description (text)",
+        "file_path (varchar(255))",
+        "created_at (timestamp)",
+        "updated_at (timestamp)"
+    ],
+    "materials": [
+        "id (bigint unsigned) NOT NULL",
+        "school_id (bigint unsigned)",
+        "subject_id (bigint unsigned)",
+        "judul (varchar(255)) NOT NULL",
+        "konten (longtext)",
+        "file_id (bigint unsigned)",
+        "file_path (varchar(500))",
+        "video_link (varchar(500))",
+        "created_by (bigint unsigned)",
+        "created_at (timestamp)",
+        "updated_at (timestamp)"
+    ],
+    "model_has_permissions": [
+        "permission_id (bigint unsigned) NOT NULL",
+        "model_type (varchar(255)) NOT NULL",
+        "model_id (bigint unsigned) NOT NULL"
+    ],
+    "model_has_roles": [
+        "role_id (bigint unsigned) NOT NULL",
+        "model_type (varchar(255)) NOT NULL",
+        "model_id (bigint unsigned) NOT NULL"
+    ],
+    "password_reset_tokens": [
+        "email (varchar(255)) NOT NULL",
+        "token (varchar(255)) NOT NULL",
+        "created_at (timestamp)"
+    ],
+    "password_reset_verifications": [
+        "id (bigint unsigned) NOT NULL",
+        "user_id (bigint unsigned) NOT NULL",
+        "method (varchar(20)) NOT NULL",
+        "token (varchar(64))",
+        "verified_by_admin_id (varchar(255))",
+        "verification_notes (text)",
+        "is_used (tinyint(1)) NOT NULL DEFAULT 0",
+        "expires_at (timestamp)",
+        "created_at (timestamp)",
+        "updated_at (timestamp)"
+    ],
+    "permissions": [
+        "id (bigint unsigned) NOT NULL",
+        "name (varchar(255)) NOT NULL",
+        "guard_name (varchar(255)) NOT NULL",
+        "created_at (timestamp)",
+        "updated_at (timestamp)"
+    ],
+    "questions": [
+        "id (bigint unsigned) NOT NULL",
+        "school_id (bigint unsigned) NOT NULL",
+        "exam_id (bigint unsigned) NOT NULL",
+        "question_text (text) NOT NULL",
+        "created_at (timestamp)",
+        "updated_at (timestamp)",
+        "correct_answer (varchar(255))",
+        "points (decimal(5,2)) NOT NULL DEFAULT 1.00"
+    ],
+    "report_cards": [
+        "id (bigint unsigned) NOT NULL",
+        "school_id (bigint unsigned) NOT NULL",
+        "student_id (bigint unsigned) NOT NULL",
+        "comments (text)",
+        "created_at (timestamp)",
+        "updated_at (timestamp)"
+    ],
+    "role_has_permissions": [
+        "permission_id (bigint unsigned) NOT NULL",
+        "role_id (bigint unsigned) NOT NULL"
+    ],
+    "roles": [
+        "id (bigint unsigned) NOT NULL",
+        "name (varchar(255)) NOT NULL",
+        "guard_name (varchar(255)) NOT NULL",
+        "created_at (timestamp)",
+        "updated_at (timestamp)"
+    ],
+    "school_events": [
+        "id (bigint unsigned) NOT NULL",
+        "school_id (bigint unsigned) NOT NULL",
+        "title (varchar(255)) NOT NULL",
+        "event_date (datetime) NOT NULL",
+        "created_at (timestamp)",
+        "updated_at (timestamp)"
+    ],
+    "school_settings": [
+        "id (bigint unsigned) NOT NULL",
+        "school_id (bigint unsigned) NOT NULL",
+        "setting_key (varchar(255)) NOT NULL",
+        "setting_value (text)",
+        "created_at (timestamp)",
+        "updated_at (timestamp)"
+    ],
+    "semesters": [
+        "id (bigint unsigned) NOT NULL",
+        "name (varchar(255)) NOT NULL",
+        "is_active (tinyint(1)) NOT NULL DEFAULT 0",
+        "created_at (timestamp)",
+        "updated_at (timestamp)"
+    ],
+    "sessions": [
+        "id (varchar(255)) NOT NULL",
+        "user_id (bigint unsigned)",
+        "ip_address (varchar(45))",
+        "user_agent (text)",
+        "payload (longtext) NOT NULL",
+        "last_activity (int) NOT NULL"
+    ],
+    "student_achievements": [
+        "id (bigint unsigned) NOT NULL",
+        "school_id (bigint unsigned) NOT NULL",
+        "student_id (bigint unsigned) NOT NULL",
+        "title (varchar(255)) NOT NULL",
+        "description (text)",
+        "created_at (timestamp)",
+        "updated_at (timestamp)"
+    ],
+    "student_families": [
+        "id (bigint unsigned) NOT NULL",
+        "school_id (bigint unsigned) NOT NULL",
+        "student_id (bigint unsigned) NOT NULL",
+        "father_name (varchar(255))",
+        "mother_name (varchar(255))",
+        "guardian_name (varchar(255))",
+        "created_at (timestamp)",
+        "updated_at (timestamp)"
+    ],
+    "student_histories": [
+        "id (bigint unsigned) NOT NULL",
+        "school_id (bigint unsigned) NOT NULL",
+        "student_id (bigint unsigned) NOT NULL",
+        "history_details (text) NOT NULL",
+        "created_at (timestamp)",
+        "updated_at (timestamp)"
+    ],
+    "student_identities": [
+        "id (bigint unsigned) NOT NULL",
+        "user_id (bigint unsigned) NOT NULL",
+        "name (varchar(255)) NOT NULL",
+        "class (varchar(255)) NOT NULL",
+        "nik (text) NOT NULL",
+        "nisn (text) NOT NULL",
+        "date_of_birth (date) NOT NULL",
+        "parents_name (text) NOT NULL",
+        "address (text) NOT NULL",
+        "created_at (timestamp)",
+        "updated_at (timestamp)"
+    ],
+    "student_violations": [
+        "id (bigint unsigned) NOT NULL",
+        "school_id (bigint unsigned) NOT NULL",
+        "student_id (bigint unsigned) NOT NULL",
+        "violation_type (varchar(255)) NOT NULL",
+        "created_at (timestamp)",
+        "updated_at (timestamp)"
+    ],
+    "study_files": [
+        "id (bigint unsigned) NOT NULL",
+        "user_id (bigint unsigned) NOT NULL",
+        "folder_id (bigint unsigned)",
+        "title (varchar(255)) NOT NULL",
+        "original_name (varchar(255))",
+        "stored_name (varchar(255))",
+        "mime_type (varchar(255))",
+        "size_bytes (bigint) NOT NULL DEFAULT 0",
+        "description (text)",
+        "created_at (timestamp)",
+        "updated_at (timestamp)"
+    ],
+    "study_goal_logs": [
+        "id (bigint unsigned) NOT NULL",
+        "goal_id (bigint unsigned) NOT NULL",
+        "log_date (date) NOT NULL",
+        "notes (text)",
+        "created_at (timestamp)",
+        "updated_at (timestamp)"
+    ],
+    "tabel_offline_scores": [
+        "id (bigint unsigned) NOT NULL",
+        "task_id (bigint unsigned) NOT NULL",
+        "student_id (bigint unsigned) NOT NULL",
+        "score (decimal(5,2))",
+        "nilai (decimal(5,2))",
+        "note (text)",
+        "catatan (text)",
+        "created_at (timestamp)",
+        "updated_at (timestamp)"
+    ],
+    "tabel_offline_tasks": [
+        "id (bigint unsigned) NOT NULL",
+        "school_id (bigint unsigned)",
+        "owner_id (bigint unsigned) NOT NULL",
+        "class_id (bigint unsigned)",
+        "subject_id (bigint unsigned)",
+        "title (varchar(255)) NOT NULL",
+        "nama_tugas (varchar(255))",
+        "description (text)",
+        "content (longtext)",
+        "photo (varchar(255))",
+        "video_url (varchar(500))",
+        "other_url (varchar(500))",
+        "tanggal (date)",
+        "created_at (timestamp)",
+        "updated_at (timestamp)"
+    ],
+    "table_documents": [
+        "id (bigint unsigned) NOT NULL",
+        "school_id (bigint unsigned)",
+        "template_id (bigint unsigned)",
+        "owner_id (bigint unsigned) NOT NULL",
+        "name (varchar(255)) NOT NULL",
+        "description (text)",
+        "data_json (longtext)",
+        "created_at (timestamp)",
+        "updated_at (timestamp)"
+    ],
+    "table_templates": [
+        "id (bigint unsigned) NOT NULL",
+        "school_id (bigint unsigned)",
+        "owner_id (bigint unsigned) NOT NULL",
+        "name (varchar(255)) NOT NULL",
+        "description (text)",
+        "visibility (varchar(20)) NOT NULL DEFAULT private",
+        "columns_json (longtext)",
+        "is_active (tinyint(1)) NOT NULL DEFAULT 1",
+        "created_at (timestamp)",
+        "updated_at (timestamp)"
+    ],
+    "teacher_attendances": [
+        "id (bigint unsigned) NOT NULL",
+        "school_id (bigint unsigned) NOT NULL",
+        "teacher_id (bigint unsigned) NOT NULL",
+        "date (date) NOT NULL",
+        "status (varchar(255)) NOT NULL",
+        "created_at (timestamp)",
+        "updated_at (timestamp)"
+    ],
+    "teacher_histories": [
+        "id (bigint unsigned) NOT NULL",
+        "school_id (bigint unsigned) NOT NULL",
+        "teacher_id (bigint unsigned) NOT NULL",
+        "history_details (text) NOT NULL",
+        "created_at (timestamp)",
+        "updated_at (timestamp)"
+    ],
+    "teaching_assignments": [
+        "id (bigint unsigned) NOT NULL",
+        "school_id (bigint unsigned) NOT NULL",
+        "teacher_id (bigint unsigned) NOT NULL",
+        "subject_id (bigint unsigned) NOT NULL",
+        "class_id (bigint unsigned) NOT NULL",
+        "academic_year_id (bigint unsigned) NOT NULL",
+        "semester_id (bigint unsigned) NOT NULL",
+        "created_at (timestamp)",
+        "updated_at (timestamp)"
+    ],
+    "teaching_journals": [
+        "id (bigint unsigned) NOT NULL",
+        "school_id (bigint unsigned) NOT NULL",
+        "teaching_assignment_id (bigint unsigned) NOT NULL",
+        "date (date) NOT NULL",
+        "content (text) NOT NULL",
+        "created_at (timestamp)",
+        "updated_at (timestamp)"
+    ],
+    "teaching_logs": [
+        "id (bigint unsigned) NOT NULL",
+        "school_id (bigint unsigned)",
+        "guru_id (bigint unsigned) NOT NULL",
+        "class_id (bigint unsigned)",
+        "subject_id (bigint unsigned)",
+        "tanggal (date) NOT NULL",
+        "materi (text) NOT NULL",
+        "catatan (text)",
+        "created_at (timestamp)",
+        "updated_at (timestamp)"
+    ],
+    "teaching_schedule": [
+        "id (bigint unsigned) NOT NULL",
+        "school_id (bigint unsigned)",
+        "guru_id (bigint unsigned) NOT NULL",
+        "class_id (bigint unsigned)",
+        "subject_id (bigint unsigned)",
+        "hari (varchar(20)) NOT NULL",
+        "jam_mulai (time) NOT NULL",
+        "jam_selesai (time) NOT NULL",
+        "created_at (timestamp)",
+        "updated_at (timestamp)"
+    ]
+}
